@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Collection</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Image Collection</h1>
+
+    <!-- Camera Feed Section -->
+    <div id="camera-section">
+        <h2>Camera Feed</h2>
+        <video id="camera" autoplay playsinline></video>
+        <button id="capture-btn">Capture Image</button>
+        <canvas id="canvas" style="display:none;"></canvas>
+        <p id="capture-status"></p>
+    </div>
+
+    <div id="collect-data">
+        <h2>Collect Data</h2>
+        <button id="collect-btn">Start Data Collection</button>
+        <p id="collect-status"></p>
+    </div>
+
+    <div id="upload-file">
+        <h2>Upload File</h2>
+        <input type="file" id="file-input">
+        <button id="upload-btn">Upload</button>
+        <p id="upload-status"></p>
+    </div>
+
+    <div id="list-files">
+        <h2>List Files</h2>
+        <button id="list-btn">List Files</button>
+        <pre id="file-list"></pre>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

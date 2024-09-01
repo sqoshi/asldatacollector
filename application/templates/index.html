@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hand Gesture Recognition</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <script>
+      function updateTextCorrected() {
+        fetch("/get_text_corrected")
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("text-area-corrected").value = data.text;
+          });
+      }
+
+      function updateText() {
+        fetch("/get_text")
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("text-area").value = data.text;
+          });
+      }
+
+      function resetText() {
+        fetch("/reset_text", { method: "POST" })
+          .then((response) => response.json())
+          .then(() => {
+            updateText();
+          });
+      }
+
+      function startCamera() {
+        fetch("/start_camera", { method: "POST" })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              document.getElementById("video").style.display = "block";
+              document.getElementById("video").src =
+                "{{ url_for('video_feed') }}";
+              setInterval(updateText, 1000);
+              setInterval(updateTextCorrected, 1000);
+            } else {
+              alert(data.message);
+            }
+          });
+      }
+
+      function sendChat() {
+        const text = document.getElementById("text-area-corrected").value;
+        fetch("/send_chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: text }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              updateChat();
+            } else {
+              alert(data.message);
+            }
+          });
+      }
+
+      function updateChat() {
+        fetch("/get_chat")
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("chat-area").value = data.chat;
+          });
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Hand Gesture Recognition</h1>
+    <button onclick="startCamera()">Start Camera</button>
+    <br /><br />
+    <img id="video" alt="video"/>
+    <textarea class="text-area" id="text-area" readonly></textarea>
+    <textarea class="text-area" id="text-area-corrected" readonly></textarea>
+    <br />
+    <button onclick="resetText()">Reset Text</button>
+
+    <textarea class="text-area" id="chat-area" readonly></textarea>
+    <button onclick="sendChat()">Send Chat</button>
+  </body>
+</html>
