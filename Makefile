@@ -5,11 +5,6 @@ ARTIFACTORY ?= ""
 .ONESHELL:
 .PHONY: run fmt prepare help
 
-run: ## Run the application
-	cd application
-	poetry shell
-	uvicorn app:app --reload
-
 fmt: ## Format the code using pre-commit
 	pre-commit run --all
 
