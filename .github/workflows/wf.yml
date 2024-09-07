@@ -18,13 +18,6 @@ jobs:
           python-version: ${{ env.python-version }}
       - run: pip install pre-commit
       - run: pre-commit run --all-files
-  hadolint:
-    runs-on: ubuntu-latest
-    container: hadolint/hadolint:latest-debian
-    steps:
-      - uses: actions/checkout@v4
-      - run: find . -type f -name Dockerfile -exec hadolint {} +
-
   build-push-package:
     runs-on: ubuntu-latest
     steps:
