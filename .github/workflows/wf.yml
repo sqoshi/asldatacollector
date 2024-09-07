@@ -32,7 +32,9 @@ jobs:
           poetry self add poetry-dynamic-versioning
       - name: Build package
         working-directory: ${{env.package-directory}}
-        run: poetry install --only main
+        run: | 
+          poetry install --only main
+          poetry build
       - name: Publish package
         if: startsWith(github.ref, 'refs/tags/')
         working-directory: ${{env.package-directory}}
