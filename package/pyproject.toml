@@ -5,7 +5,7 @@ name = "idatagate"
 version = "0.0.0"
 authors = ["Popis <piotrpopis98@icloud.com>"]
 description = "Package for collecting data and transforming to dataset"
-readme = "../README.md"
+readme = "README.md"
 include = ["assets/*"]
 
 [tool.poetry.scripts]

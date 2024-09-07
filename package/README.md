@@ -62,7 +62,7 @@ This command will continuously capture images for 26 classes (each corresponding
 To upload a zip file to Google Storage, use:
 
 ```bash
-idatagate upload output.zip
+idatagate upload --key <API_KEY>
 ```
 
 Make sure the key is already set before running the upload command. If the key is not set, use the idatagate set-key command as described earlier.
