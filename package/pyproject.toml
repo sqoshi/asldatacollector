@@ -9,7 +9,7 @@ readme = "README.md"
 include = ["assets/*"]
 
 [tool.poetry.scripts]
-httdataprep = "httdataprep.cli:app"
+idatagate = "idatagate.cli:app"
 
 [tool.poetry.dependencies]
 python = "^3.10"
