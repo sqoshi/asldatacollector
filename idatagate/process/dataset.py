@@ -5,6 +5,7 @@ import random
 from pathlib import Path
 
 import cv2
+import psutil
 from mediapipe.python.solutions.hands import Hands
 
 
@@ -57,8 +58,8 @@ def process_all(
             result["data"].append(data_aux)
             result["labels"].append(label)
             valid_count += 1
-
         if i % progress_interval == 0 or i == total_images:
+            logging.debug(f"RAM usage: {psutil.virtual_memory().percent}%")
             logging.info(
                 f"Processed {i} out of {total_images} images ({(i / total_images) * 100:.0f}%)"
             )
