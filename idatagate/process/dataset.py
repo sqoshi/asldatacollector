@@ -42,12 +42,8 @@ def process_all(
         min_detection_confidence=0.3,
     )
     result = {"data": [], "labels": []}
-    # all_labels = set()
-    # for sample_dir in os.listdir(dir):
-    #     all_labels.update(os.listdir(os.path.join(dir, sample_dir)))
-
     all_images = [str(file) for file in Path(dir).rglob("*") if file.is_file()]
-    all_images = random.shuffle(all_images)
+    random.shuffle(all_images)
     for img_path in all_images:
         data_aux, valid = process_image(hands, img_path)
         if valid:
