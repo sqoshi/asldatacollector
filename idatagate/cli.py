@@ -34,6 +34,9 @@ key_opt = typer.Option(
 
 @app.command()
 def collect(
+    draw: bool = typer.Option(
+        True, "--draw/--no-draw", help="Draw hand landmarks connections"
+    ),
     zip: bool = typer.Option(True, "--zip/--no-zip", help="Get output as zip"),
     data_dir: str = typer.Option(
         "/tmp/data", "--data-dir", "-d", help="Directory to store images"
