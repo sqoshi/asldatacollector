@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import logging
 import os
 
@@ -14,8 +13,11 @@ from idatagate.utils.helpers import get_letter
 from idatagate.utils.samples import create_class_samples_image
 
 
-def create_directory(path: str):
+def create_directory(path: str, drop: bool = False):
     """Create a directory if it doesn't exist."""
+    if drop and os.path.exists(path):
+        for file in os.listdir(path):
+            os.remove(os.path.join(path, file))
     if not os.path.exists(path):
         os.makedirs(path)
 
@@ -70,7 +72,7 @@ def collect_data(
     for class_id in range(number_of_classes):
         logging.info(f"Collecting data for class {class_id}")
         class_dir = os.path.join(data_dir, str(class_id))
-        create_directory(class_dir)
+        create_directory(class_dir, drop=True)
         while len(os.listdir(class_dir)) < dataset_size:
             ret, frame = cap.read()
             if not ret:

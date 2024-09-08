@@ -45,7 +45,7 @@ source = ["src"]
 line-length = 88
 
 [tool.flake8]
-max-line-length = 88
+max-line-length = 98
 per-file-ignores = "__init__.py:F401"
 ignore = ["E501", "E203"]
 

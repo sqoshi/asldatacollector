@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import logging
 import os
 import shutil
@@ -6,14 +5,15 @@ from typing import Optional
 
 import typer
 
-from .collect.collect import collect_data
-from .collect.google.key import initialize_service
-from .collect.google.storage import (
+from idatagate.collect.collect import collect_data
+from idatagate.collect.google.key import initialize_service
+from idatagate.collect.google.storage import (
     download_all_files,
     download_file,
     list_files,
     upload_file,
 )
+from idatagate.process.dataset import process_all
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -26,6 +26,10 @@ logger = logging.getLogger("htt")
 app = typer.Typer()
 
 DEFAULT_KEY = None
+
+key_opt = typer.Option(
+    DEFAULT_KEY, "--key", help="Encryption key for the service account"
+)
 
 
 @app.command()
@@ -54,9 +58,12 @@ def process(
     data_dir: str = typer.Option(
         "./data", "--data-dir", "-d", help="Directory with images"
     ),
+    output: str = typer.Option(
+        "data.pickle", "--output", "-o", help="Output pickle file"
+    ),
 ):
     """Transform images into dataset pickle."""
-    logging.info("not implemented %s", data_dir)
+    process_all(data_dir)
 
 
 @app.command()
@@ -65,9 +72,7 @@ def upload(
         "output.zip",
         help="Path to zip file to upload to Google Drive",
     ),
-    key: Optional[str] = typer.Option(
-        DEFAULT_KEY, "--key", help="Encryption key for the service account"
-    ),
+    key: Optional[str] = key_opt,
 ):
     """Upload files to Google Storage."""
     if os.path.exists(file):
@@ -79,9 +84,7 @@ def upload(
 
 @app.command()
 def list(
-    key: Optional[str] = typer.Option(
-        DEFAULT_KEY, "--key", help="Encryption key for the service account"
-    ),
+    key: Optional[str] = key_opt,
 ):
     """List files in Google Storage."""
     service = initialize_service(key)
@@ -93,9 +96,7 @@ def download(
     file_id: Optional[str] = typer.Option(
         None, "--file-id", help="File ID to download"
     ),
-    key: Optional[str] = typer.Option(
-        DEFAULT_KEY, "--key", help="Encryption key for the service account"
-    ),
+    key: Optional[str] = key_opt,
 ):
     """Download files from Google Drive."""
     service = initialize_service(key)
