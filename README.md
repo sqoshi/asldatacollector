@@ -47,7 +47,7 @@ The command will take images for 26 different classes (such as the alphabet in s
 The collection will continue until all images are gathered for each class.
 The image collection uses real-time landmark detection to capture high-quality images. For reference, the classes are aligned with the alphabet as demonstrated in this example image:
 
-![img](./package/idatagate/assets/alphabet.png)
+![img](https://github.com/sqoshi/idatagate/raw/master/idatagate/assets/alphabet.png)
 
 #### Example Command
 

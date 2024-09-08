@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import logging
 import os
 import pickle
@@ -6,12 +7,12 @@ import cv2
 import numpy as np
 from mediapipe.python.solutions.hands import Hands
 
-from .statistics import draw_class_bar_plot, print_class_stats
+from ..utils.statistics import draw_class_bar_plot, print_class_stats
 
 DATA_DIR = "./data"
 
 
-def main():
+def process():
     hands = Hands(max_num_hands=1, static_image_mode=True, min_detection_confidence=0.3)
 
     data = []
@@ -47,6 +48,3 @@ def main():
 
     with open("data.pickle", "wb") as f:
         pickle.dump({"data": data, "labels": labels}, f)
-
-
-main()

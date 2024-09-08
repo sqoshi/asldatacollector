@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import logging
 import os
 import uuid
@@ -50,18 +51,13 @@ def list_files(service):
             break
 
         for item in items:
-            file_name = item["name"]
-            file_id = item["id"]
-            created_time = item.get("createdTime", "")
-            size = item.get("size", "")
+            size = item.get("size", "N/A")
+            if size.isdigit():
+                size = round(int(size) / (1024 * 1024), 2)
 
-            if size:
-                size = int(size) / (1024 * 1024)  # Convert to MB
-                size = round(size, 2)
-            else:
-                size = "N/A"
-
-            data.append([file_name, file_id, created_time, f"{size} MB"])
+            data.append(
+                [item["name"], item["id"], item.get("createdTime", ""), f"{size} MB"]
+            )
 
         if not page_token:
             break
@@ -94,17 +90,15 @@ def download_all_files(destination_folder: str, service):
         .execute()
     )
     items = results.get("files", [])
-
     if not items:
         logging.info("No files to download.")
     else:
         if not os.path.exists(destination_folder):
             os.makedirs(destination_folder)
         for item in items:
-            file_id = item["id"]
-            file_name = item["name"]
-            destination_path = os.path.join(destination_folder, file_name)
-            download_file(file_id, destination_path, service)
+            download_file(
+                item["id"], os.path.join(destination_folder, item["name"]), service
+            )
 
 
 def delete_file(file_id: str, service):

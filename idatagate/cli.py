@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import logging
 import os
 import shutil
@@ -5,9 +6,14 @@ from typing import Optional
 
 import typer
 
-from .collect import collect_data
-from .storage import download_all_files, download_file, list_files, upload_file
-from .utils import initialize_service
+from .collect.collect import collect_data
+from .collect.google.key import initialize_service
+from .collect.google.storage import (
+    download_all_files,
+    download_file,
+    list_files,
+    upload_file,
+)
 
 logging.basicConfig(
     level=logging.DEBUG,

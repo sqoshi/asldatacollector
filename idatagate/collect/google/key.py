@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import os
 from typing import Optional
@@ -5,15 +6,6 @@ from typing import Optional
 from cryptography.fernet import Fernet
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
-
-
-def get_letter(position: int) -> Optional[str]:
-    if 0 <= position <= 25:
-        return chr(position + 65)
-
-
-def get_relative_path(*args) -> str:
-    return os.path.join(os.path.dirname(__file__), *args)
 
 
 def decode(encoded_str: str, key: str) -> str:
@@ -56,8 +48,10 @@ def get_drive_service(creds: Credentials):
 
 def initialize_service(key_flag: Optional[str]):
     """Initialize the Google Drive service."""
-    key_file = get_relative_path("../key.txt")
+    key_file = "key.txt"
     key_bytes = get_key(key_flag, key_file)
-    service_account_file = get_relative_path("assets", "encsa.txt")
+    service_account_file = os.path.join(
+        os.path.dirname(__file__), "..", "..", "assets", "encsa.txt"
+    )
     creds = get_service_account_credentials(service_account_file, key_bytes)
     return get_drive_service(creds)

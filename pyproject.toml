@@ -47,7 +47,7 @@ line-length = 88
 [tool.flake8]
 max-line-length = 88
 per-file-ignores = "__init__.py:F401"
-ignore = []
+ignore = ["E501", "E203"]
 
 [tool.isort]
 atomic = true
