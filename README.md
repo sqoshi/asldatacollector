@@ -105,9 +105,8 @@ idatagate upload
 
 ### Caching the Encryption Key
 
-The first time you run the set-key command, the key is securely stored using a credentials management system. You don't need to provide the key again unless you wish to change it.
+It is possible
 
-bash
 
 ## Contributing
 

@@ -8,6 +8,7 @@ import typer
 from idatagate.collect.collect import collect_data
 from idatagate.collect.google.key import initialize_service
 from idatagate.collect.google.storage import (
+    delete_file,
     download_all_files,
     download_file,
     list_files,
@@ -35,7 +36,7 @@ key_opt = typer.Option(
 @app.command()
 def collect(
     draw: bool = typer.Option(
-        True, "--draw/--no-draw", help="Draw hand landmarks connections"
+        False, "--draw/--no-draw", help="Draw hand landmarks connections"
     ),
     zip: bool = typer.Option(True, "--zip/--no-zip", help="Get output as zip"),
     clean: bool = typer.Option(
@@ -70,7 +71,7 @@ def process(
     ),
 ):
     """Transform images into dataset pickle."""
-    process_all(data_dir)
+    process_all(data_dir, output)
 
 
 @app.command()
@@ -99,18 +100,34 @@ def list(
 
 
 @app.command()
+def delete(
+    file_id: str = typer.Option(None, "--file-id", help="File ID to download"),
+    key: Optional[str] = key_opt,
+):
+    """List files in Google Storage."""
+    service = initialize_service(key)
+    delete_file(file_id, service)
+
+
+@app.command()
 def download(
     file_id: Optional[str] = typer.Option(
         None, "--file-id", help="File ID to download"
     ),
     key: Optional[str] = key_opt,
+    unpack_dir: Optional[str] = typer.Option(
+        None, "--unpack-dir", "-ud", help="Directory to unpack files"
+    ),
 ):
     """Download files from Google Drive."""
     service = initialize_service(key)
     if file_id:
         download_file(file_id, f"./{file_id}.zip", service)
+        if unpack_dir:
+            shutil.unpack_archive(f"./{file_id}.zip", unpack_dir, "zip")
+            os.remove(f"./{file_id}.zip")
     else:
-        download_all_files("./dataset.zip", service)
+        download_all_files("./output", service)
 
 
 if __name__ == "__main__":
