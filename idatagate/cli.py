@@ -85,6 +85,9 @@ def upload(
     """Upload files to Google Storage."""
     if os.path.exists(file):
         service = initialize_service(key)
+        if os.path.isdir(file):
+            shutil.make_archive("output", "zip", file)
+            file = "output.zip"
         upload_file(file, service)
     else:
         logging.info(f"File {file} does not exist")
