@@ -38,6 +38,9 @@ def collect(
         True, "--draw/--no-draw", help="Draw hand landmarks connections"
     ),
     zip: bool = typer.Option(True, "--zip/--no-zip", help="Get output as zip"),
+    clean: bool = typer.Option(
+        False, "--clean/--no-clean", help="Remove images dir but keep only zip"
+    ),
     data_dir: str = typer.Option(
         "/tmp/data", "--data-dir", "-d", help="Directory to store images"
     ),
@@ -50,9 +53,10 @@ def collect(
     capture_device: int = typer.Option(0, "--capture-device", help="Camera device ID"),
 ):
     """Take hand images."""
-    collect_data(data_dir, classes_number, samples_number, capture_device)
+    collect_data(data_dir, classes_number, samples_number, capture_device, draw)
     if zip:
         shutil.make_archive("output", "zip", data_dir)
+    if clean:
         shutil.rmtree(data_dir)
 
 

@@ -6,14 +6,8 @@ from pathlib import Path
 import cv2
 from mediapipe.python.solutions.hands import Hands
 
-hands = Hands(
-    max_num_hands=1,
-    static_image_mode=True,
-    min_detection_confidence=0.3,
-)
 
-
-def process_image(img_path: str):
+def process_image(hands: Hands, img_path: str):
     """Process a single image and extract hand landmarks."""
     data_aux = []
     x_, y_ = [], []
@@ -42,6 +36,11 @@ def process_all(
     batch: int = 100,
 ):
     """Process all classes across all sample directories in batches."""
+    hands = Hands(
+        max_num_hands=1,
+        static_image_mode=True,
+        min_detection_confidence=0.3,
+    )
     result = {"data": [], "labels": []}
     # all_labels = set()
     # for sample_dir in os.listdir(dir):
@@ -50,7 +49,7 @@ def process_all(
     all_images = [str(file) for file in Path(dir).rglob("*") if file.is_file()]
     all_images = random.shuffle(all_images)
     for img_path in all_images:
-        data_aux, valid = process_image(img_path)
+        data_aux, valid = process_image(hands, img_path)
         if valid:
             label = img_path.split(os.path.sep)[-2]
             result["data"].append(data_aux)
