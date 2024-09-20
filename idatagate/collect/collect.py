@@ -64,6 +64,7 @@ def collect_data(
     dataset_size: int = 100,
     capture_device: int = 0,
     draw: bool = True,
+    show_sample: bool = True,
 ):
     """Main function to collect data for all classes"""
     create_directory(data_dir)
@@ -114,7 +115,8 @@ def collect_data(
                 cap.release()
                 cv2.destroyAllWindows()
                 return
-    samples_diag = create_class_samples_image(data_dir)
-    cv2.imwrite("samples.png", samples_diag)
+    if show_sample:
+        samples_diag = create_class_samples_image(data_dir)
+        cv2.imwrite("samples.png", samples_diag)
     cap.release()
     cv2.destroyAllWindows()
