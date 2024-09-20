@@ -44,7 +44,9 @@ def display_instructions(frame, class_id: int):
 def show_image_from_file(image_path: str = ""):
     """Display an image from a file in a separate window."""
     if not image_path:
-        image_path = os.path.join(os.path.dirname(__file__), "assets", "alphabet.png")
+        image_path = os.path.join(
+            os.path.dirname(__file__), "..", "assets", "alphabet.png"
+        )
     if not os.path.exists(image_path):
         logging.warning(f"Image file {image_path} not found")
         return
@@ -70,14 +72,27 @@ def collect_data(
     show_image_from_file()
 
     for class_id in range(number_of_classes):
-        logging.info(f"Collecting data for class {class_id}")
         class_dir = os.path.join(data_dir, str(class_id))
         create_directory(class_dir, drop=True)
-        while len(os.listdir(class_dir)) < dataset_size:
+        while True:
             ret, frame = cap.read()
             if not ret:
                 break
             display_instructions(frame, class_id)
+            cv2.imshow("frame", frame)
+            key = cv2.waitKey(25)
+            if key == 27:
+                cap.release()
+                cv2.destroyAllWindows()
+                return
+            if key == ord("q"):
+                break
+
+        logging.info(f"Collecting data for class {class_id}")
+        while len(os.listdir(class_dir)) < dataset_size:
+            ret, frame = cap.read()
+            if not ret:
+                break
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             results = hands.process(frame_rgb)
             if results.multi_hand_landmarks:
@@ -95,12 +110,10 @@ def collect_data(
             else:
                 logging.debug("Landmarks not visible")
             cv2.imshow("frame", frame)
-            key = cv2.waitKey(25)
-            if key == 27:  # ESC key to exit
+            if cv2.waitKey(25) == 27:
+                cap.release()
+                cv2.destroyAllWindows()
                 return
-            if key == ord("q"):  # 'q' key to start collecting data
-                break
-
     samples_diag = create_class_samples_image(data_dir)
     cv2.imwrite("samples.png", samples_diag)
     cap.release()

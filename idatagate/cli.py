@@ -125,10 +125,13 @@ def download(
     """Download files from Google Drive."""
     service = initialize_service(key)
     if file_id:
-        download_file(file_id, f"./{file_id}.zip", service)
+        fn = f"{file_id}.zip"
+        download_file(file_id, fn, service)
         if unpack_dir:
-            shutil.unpack_archive(f"./{file_id}.zip", unpack_dir, "zip")
-            os.remove(f"./{file_id}.zip")
+            logging.info("Unpacked to %s", unpack_dir)
+            os.makedirs(unpack_dir, exist_ok=True)
+            shutil.unpack_archive(fn, unpack_dir, "zip")
+            os.remove(fn)
     else:
         download_all_files("./output", service)
 
