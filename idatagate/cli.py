@@ -5,16 +5,16 @@ from typing import Optional
 
 import typer
 
-from idatagate.collect.collect import collect_data
-from idatagate.collect.google.key import initialize_service
-from idatagate.collect.google.storage import (
+from asldatacollector.collect.collect import collect_data
+from asldatacollector.collect.google.key import initialize_service
+from asldatacollector.collect.google.storage import (
     delete_file,
     download_all_files,
     download_file,
     list_files,
     upload_file,
 )
-from idatagate.process.dataset import process_all
+from asldatacollector.process.dataset import process_all
 
 logging.basicConfig(
     level=logging.DEBUG,

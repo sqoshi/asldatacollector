@@ -9,8 +9,8 @@ from mediapipe.python.solutions.drawing_styles import (
 from mediapipe.python.solutions.drawing_utils import draw_landmarks
 from mediapipe.python.solutions.hands import HAND_CONNECTIONS, Hands
 
-from idatagate.utils.helpers import get_letter
-from idatagate.utils.samples import create_class_samples_image
+from asldatacollector.utils.helpers import get_letter
+from asldatacollector.utils.samples import create_class_samples_image
 
 
 def create_directory(path: str, drop: bool = False):

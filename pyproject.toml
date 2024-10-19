@@ -1,7 +1,7 @@
 
 [tool.poetry]
 package-mode = true
-name = "idatagate"
+name = "asldatacollector"
 version = "0.0.0"
 authors = ["Popis <piotrpopis98@icloud.com>"]
 description = "Package for collecting data and transforming to dataset"
@@ -9,7 +9,7 @@ readme = "README.md"
 include = ["assets/*"]
 
 [tool.poetry.scripts]
-idatagate = "idatagate.cli:app"
+asldatacollector = "asldatacollector.cli:app"
 
 [tool.poetry.dependencies]
 python = "^3.9"
